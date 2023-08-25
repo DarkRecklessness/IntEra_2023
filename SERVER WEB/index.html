@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#111111" />
+    <title>Intera Gigachad</title>
+    <style>
+      #root {
+        min-height: 85ch;
+        /* background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrdJcwF5f6w8-S5XU7fpAq7TqqMpoD-SiYSg&usqp=CAU); */
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+      #graph {
+        height: 500px;
+      }
+      .aaa {
+        width: 300px;
+        height: 25px;
+        border-radius: 10px;
+        border: 1px solid;
+        background-color: rgb(206, 210, 210);
+        font-size: large;
+        text-align: center;
+        margin: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <img id="graph" alt="graph" src="./graph.jpg">
+      <ul style="list-style-type: none;">
+        <li id="data1" class="aaa"></li>
+        <li id="data2" class="aaa"></li>
+        <li id="data3" class="aaa"></li>
+        <li id="data4" class="aaa"></li>
+      </ul>
+    </div>
+  </body>
+  <script type="text/javascript">
+    const request = new XMLHttpRequest;
+
+    request.open('GET', 'data.txt', true);
+
+    request.onload = function () {
+      const mas = [];
+      let pos = -1;
+      let prev_pos = 0;
+      const str = request.responseText;
+      while ((pos = str.indexOf('\n', pos + 1)) != -1) {
+        mas.push(str.slice(prev_pos, pos-1));
+        prev_pos = pos + 1;
+      }
+      mas.push(str.slice(prev_pos));
+      console.log(mas);
+      document.getElementById("data1").textContent = "Внутри: " + mas[0] + "°C";
+      document.getElementById("data2").textContent = "Снаружи: " + mas[1] + "°C";
+      document.getElementById("data3").textContent = "Скорость вентилятора: " + mas[2] + "%";
+      document.getElementById("data4").textContent = "Положение форточки: " + ((mas[3] == "1") ? "Открыто" : "Закрыто");
+    };
+
+    request.send(null);
+
+    setTimeout(() =>{location.reload()} , 1000);
+  </script>
+</html>
+
+
